@@ -3,111 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REMESAS RAULY | Holguín y Banes</title>
+    <title>REMESAS RAULY | Gestión de Envíos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .bg-rauly { background-color: #003366; }
         .text-rauly { color: #003366; }
+        .step-hidden { display: none; }
+        input:focus { border-color: #003366 !important; }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50 pb-10">
 
-    <!-- Header -->
-    <nav class="bg-rauly text-white p-4 shadow-lg">
+    <nav class="bg-rauly text-white p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold tracking-widest">REMESAS RAULY</h1>
-            <i class="fas fa-paper-plane"></i>
+            <i class="fas fa-paper-plane animate-bounce"></i>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <div class="bg-rauly text-white py-12 px-6 text-center">
-        <h2 class="text-3xl font-bold mb-2">Entregas en Holguín y Banes</h2>
-        <p class="opacity-90">Efectivo en mano (CUP) directo a la casa.</p>
-    </div>
+    <main class="container mx-auto p-4 max-w-md">
+        
+        <section id="step-1" class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+            <div class="flex items-center mb-6">
+                <span class="bg-rauly text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 font-bold">1</span>
+                <h3 class="font-bold text-gray-700 uppercase">Calcula tu Envío</h3>
+            </div>
 
-    <!-- Calculadora -->
-    <main class="container mx-auto p-4 -mt-8">
-        <div class="bg-white rounded-xl shadow-xl p-6 mb-6">
-            <h3 class="text-center font-bold text-gray-700 mb-4 uppercase">1. Selecciona tu país</h3>
-            <div class="grid grid-cols-3 gap-2 mb-8">
-                <button onclick="update('MXN', 27)" class="border-2 border-blue-200 rounded-lg p-3 hover:bg-blue-50 focus:bg-blue-100 focus:border-blue-600 transition">
-                    <span class="block text-2xl">🇲🇽</span>
-                    <span class="text-xs font-bold">México</span>
+            <div class="grid grid-cols-3 gap-3 mb-6">
+                <button onclick="selectCountry('MXN', 27, '🇲🇽 México')" class="country-btn border-2 border-gray-100 rounded-xl p-3 hover:border-blue-400 transition-all flex flex-col items-center">
+                    <span class="text-3xl mb-1">🇲🇽</span>
+                    <span class="text-[10px] font-black">MÉXICO</span>
                 </button>
-                <button onclick="update('CAD', 305)" class="border-2 border-blue-200 rounded-lg p-3 hover:bg-blue-50 focus:bg-blue-100 focus:border-blue-600 transition">
-                    <span class="block text-2xl">🇨🇦</span>
-                    <span class="text-xs font-bold">Canadá</span>
+                <button onclick="selectCountry('CAD', 305, '🇨🇦 Canadá')" class="country-btn border-2 border-gray-100 rounded-xl p-3 hover:border-blue-400 transition-all flex flex-col items-center">
+                    <span class="text-3xl mb-1">🇨🇦</span>
+                    <span class="text-[10px] font-black">CANADÁ</span>
                 </button>
-                <button onclick="update('USD', 490)" class="border-2 border-blue-200 rounded-lg p-3 hover:bg-blue-50 focus:bg-blue-100 focus:border-blue-600 transition">
-                    <span class="block text-2xl">🇺🇸</span>
-                    <span class="text-xs font-bold">USA</span>
+                <button onclick="selectCountry('USD', 490, '🇺🇸 USA')" class="country-btn border-2 border-gray-100 rounded-xl p-3 hover:border-blue-400 transition-all flex flex-col items-center">
+                    <span class="text-3xl mb-1">🇺🇸</span>
+                    <span class="text-[10px] font-black">USA</span>
                 </button>
             </div>
 
-            <div id="calc-box" class="hidden">
-                <div class="mb-4">
-                    <label class="block text-gray-600 text-sm font-bold mb-1">Tú envías (<span id="cur">MXN</span>):</label>
-                    <input type="number" id="amt" oninput="calc()" class="w-full p-4 border-2 border-gray-200 rounded-lg text-xl font-bold focus:border-blue-500 outline-none" placeholder="0.00">
+            <div id="calc-inputs" class="hidden space-y-4">
+                <div>
+                    <label class="block text-gray-500 text-xs font-bold mb-1 uppercase">Cantidad que envías (<span id="cur-label"></span>):</label>
+                    <input type="number" id="amt" oninput="calculate()" class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-2xl font-bold outline-none" placeholder="0.00">
                 </div>
-                <div class="mb-6">
-                    <label class="block text-gray-600 text-sm font-bold mb-1">Reciben en Cuba (CUP):</label>
-                    <div class="w-full p-4 bg-green-50 border-2 border-green-200 rounded-lg text-2xl font-bold text-green-700" id="res">0.00</div>
+                <div>
+                    <label class="block text-gray-500 text-xs font-bold mb-1 uppercase">Reciben en Cuba (CUP):</label>
+                    <div class="w-full p-4 bg-blue-50 border-2 border-blue-100 rounded-xl text-3xl font-black text-rauly" id="res-cup">0.00</div>
                 </div>
-
-                <div id="methods" class="bg-blue-50 p-4 rounded-lg mb-6 border-l-4 border-blue-600">
-                    <p class="text-sm font-bold text-blue-900 mb-2 underline text-center">VÍAS DE PAGO DISPONIBLES:</p>
-                    <div id="method-list" class="text-sm text-blue-800 space-y-1"></div>
-                </div>
-
-                <a id="wa-btn" href="#" target="_blank" class="block w-full bg-green-600 text-white text-center py-4 rounded-lg font-bold shadow-lg hover:bg-green-700 transition">
-                    <i class="fab fa-whatsapp mr-2"></i> CONTACTAR POR WHATSAPP
-                </a>
+                <button onclick="goToStep(2)" class="w-full bg-rauly text-white py-4 rounded-xl font-bold shadow-lg hover:bg-blue-900 transition flex items-center justify-center">
+                    SIGUIENTE <i class="fas fa-arrow-right ml-2"></i>
+                </button>
             </div>
-        </div>
+        </section>
 
-        <!-- Cobertura -->
-        <div class="bg-white rounded-xl shadow p-6 border-t-4 border-yellow-500">
-            <h4 class="font-bold text-rauly mb-3"><i class="fas fa-map-marker-alt mr-2"></i>ZONAS DE ENTREGA</h4>
-            <ul class="text-gray-600 text-sm space-y-2">
-                <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Holguín (Ciudad)</li>
-                <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Banes</li>
-                <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Entrega a domicilio incluida</li>
-            </ul>
-        </div>
+        <section id="step-2" class="step-hidden bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+            <div class="flex items-center mb-6">
+                <button onclick="goToStep(1)" class="mr-3 text-gray-400 hover:text-rauly"><i class="fas fa-arrow-left"></i></button>
+                <span class="bg-rauly text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 font-bold">2</span>
+                <h3 class="font-bold text-gray-700 uppercase">Detalles del Pago</h3>
+            </div>
+
+            <div class="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-xl">
+                <p class="text-xs font-bold text-yellow-800 mb-2 uppercase"><i class="fas fa-university mr-1"></i> Transfiere a estas cuentas:</p>
+                <div id="bank-info" class="text-sm text-gray-700 leading-relaxed"></div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-500 text-[10px] font-black mb-1 uppercase">Dirección exacta en Cuba:</label>
+                    <textarea id="address" rows="2" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none" placeholder="Calle, #, entre qué calles y municipio..."></textarea>
+                </div>
+                <div>
+                    <label class="block text-gray-500 text-[10px] font-black mb-1 uppercase">Nombre de quien recibe:</label>
+                    <input type="text" id="receiver-name" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none" placeholder="Nombre Completo">
+                </div>
+                <div>
+                    <label class="block text-gray-500 text-[10px] font-black mb-1 uppercase">Nombre de tu cuenta (Desde donde envías):</label>
+                    <input type="text" id="sender-account" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none" placeholder="Ej: Juan Pérez">
+                </div>
+                
+                <div class="p-4 border-2 border-dashed border-gray-200 rounded-xl text-center">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-2">Adjunta captura de pantalla en el WhatsApp</p>
+                    <i class="fas fa-camera text-2xl text-gray-300"></i>
+                </div>
+
+                <button onclick="sendToWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-green-700 transition flex items-center justify-center">
+                    <i class="fab fa-whatsapp mr-2 text-xl"></i> ENVIAR TODO POR WHATSAPP
+                </button>
+            </div>
+        </section>
+
+        <section id="step-3" class="step-hidden bg-white rounded-2xl shadow-xl p-8 text-center border border-gray-100">
+            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-black text-gray-800 mb-2">¡LISTO! ✅</h2>
+            <p class="text-gray-600 mb-6">Tus datos han sido enviados. Por favor, asegúrate de adjuntar la <b>foto del comprobante</b> en el chat de WhatsApp que se abrió.</p>
+            <p class="text-sm bg-blue-50 p-4 rounded-lg text-blue-700">"Una vez entregado el dinero, tu familiar te avisará de inmediato."</p>
+            <button onclick="location.reload()" class="mt-8 text-rauly font-bold underline">Hacer otro envío</button>
+        </section>
+
     </main>
 
     <script>
         let currentRate = 0;
         let currentCur = '';
+        let currentCountryName = '';
 
-        function update(cur, rate) {
+        const bankData = {
+            'MXN': '<b>BBVA:</b> 1234 5678 9012 3456<br><b>COPPEL:</b> 9876 5432 1098 7654<br><b>OXXO:</b> Disponible en caja.',
+            'CAD': '<b>INTERAC:</b> rauly.remesas@email.com<br><b>PayPal:</b> @RaulyRemesas',
+            'USD': '<b>ZELLE:</b> +1 234 567 8900<br><b>W. Union:</b> Datos por privado<br><b>PayPal:</b> @RaulyRemesas'
+        };
+
+        function selectCountry(cur, rate, name) {
             currentRate = rate;
             currentCur = cur;
-            document.getElementById('cur').innerText = cur;
-            document.getElementById('calc-box').classList.remove('hidden');
+            currentCountryName = name;
             
-            const mList = document.getElementById('method-list');
-            if(cur === 'MXN') {
-                mList.innerHTML = '• Depósito/Transferencia <b>BBVA</b><br>• Depósito/Transferencia <b>BANCOPPEL</b><br>• Depósito en <b>OXXO</b>';
-            } else if(cur === 'CAD') {
-                mList.innerHTML = '• <b>INTERAC</b> e-Transfer<br>• PayPal (Saldo)';
-            } else {
-                mList.innerHTML = '• <b>ZELLE</b><br>• Western Union<br>• PayPal';
-            }
-            calc();
+            document.getElementById('cur-label').innerText = cur;
+            document.getElementById('calc-inputs').classList.remove('hidden');
+            
+            // Estética: resaltar botón seleccionado
+            document.querySelectorAll('.country-btn').forEach(btn => btn.classList.remove('border-blue-600', 'bg-blue-50'));
+            event.currentTarget.classList.add('border-blue-600', 'bg-blue-50');
+            
+            calculate();
         }
 
-        function calc() {
+        function calculate() {
             const amt = document.getElementById('amt').value;
-            const res = document.getElementById('res');
+            const res = document.getElementById('res-cup');
             const total = amt * currentRate;
             res.innerText = total.toLocaleString() + ' CUP';
+        }
+
+        function goToStep(step) {
+            document.getElementById('step-1').classList.add('step-hidden');
+            document.getElementById('step-2').classList.add('step-hidden');
+            document.getElementById('step-3').classList.add('step-hidden');
             
-            const msg = `Hola Rauly, quiero enviar ${amt} ${currentCur} para que entregues ${total} CUP en efectivo en Cuba.`;
-            document.getElementById('wa-btn').href = `https://wa.me/+5356558564?text=${encodeURIComponent(msg)}`;
+            document.getElementById('step-' + step).classList.remove('step-hidden');
+            
+            if(step === 2) {
+                document.getElementById('bank-info').innerHTML = bankData[currentCur];
+            }
+            window.scrollTo(0,0);
+        }
+
+        function sendToWhatsApp() {
+            const amt = document.getElementById('amt').value;
+            const cup = (amt * currentRate).toLocaleString();
+            const addr = document.getElementById('address').value;
+            const receiver = document.getElementById('receiver-name').value;
+            const senderAcc = document.getElementById('sender-account').value;
+
+            if(!addr || !receiver || !senderAcc) {
+                alert("Por favor, completa todos los campos para continuar.");
+                return;
+            }
+
+            const message = `*NUEVO PEDIDO - REMESAS RAULY*%0A%0A` +
+                            `*País:* ${currentCountryName}%0A` +
+                            `*Envía:* ${amt} ${currentCur}%0A` +
+                            `*Entrega:* ${cup} CUP%0A` +
+                            `--------------------------%0A` +
+                            `*Cuenta Emisora:* ${senderAcc}%0A` +
+                            `*Recibe:* ${receiver}%0A` +
+                            `*Dirección:* ${addr}%0A%0A` +
+                            `_Adjunto la captura del envío a continuación..._`;
+
+            const waUrl = `https://wa.me/+5356558564?text=${message}`;
+            
+            window.open(waUrl, '_blank');
+            goToStep(3);
         }
     </script>
 </body>
