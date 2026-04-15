@@ -10,177 +10,206 @@
         .bg-rauly { background-color: #003366; }
         .text-rauly { color: #003366; }
         .step-hidden { display: none; }
-        input:focus { border-color: #003366 !important; }
+        .btn-active { border-color: #003366; background-color: #f0f7ff; ring: 2px; ring-color: #003366; }
     </style>
 </head>
 <body class="bg-gray-50 pb-10">
 
     <nav class="bg-rauly text-white p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-widest">REMESAS RAULY</h1>
-            <i class="fas fa-paper-plane animate-bounce"></i>
+            <h1 class="text-xl font-bold tracking-widest uppercase">Remesas Rauly</h1>
+            <i class="fas fa-lock text-yellow-400"></i>
         </div>
     </nav>
 
     <main class="container mx-auto p-4 max-w-md">
         
+        <div id="welcome-msg" class="bg-white rounded-2xl shadow-md p-6 mb-6 border-t-4 border-rauly">
+            <h2 class="text-xl font-bold text-rauly mb-2 text-center">Confianza y Seguridad 🤝</h2>
+            <p class="text-gray-600 text-sm text-center leading-relaxed">
+                Garantizamos que tu apoyo llegue a manos de tus seres queridos en <b>Holguín y Banes</b> de forma rápida y segura. Tu tranquilidad es nuestro compromiso.
+            </p>
+        </div>
+
         <section id="step-1" class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
             <div class="flex items-center mb-6">
-                <span class="bg-rauly text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 font-bold">1</span>
-                <h3 class="font-bold text-gray-700 uppercase">Calcula tu Envío</h3>
+                <span class="bg-rauly text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 font-bold text-sm">1</span>
+                <h3 class="font-bold text-gray-700 uppercase text-sm">Selecciona Origen</h3>
             </div>
 
-            <div class="grid grid-cols-3 gap-3 mb-6">
-                <button onclick="selectCountry('MXN', 27, '🇲🇽 México')" class="country-btn border-2 border-gray-100 rounded-xl p-3 hover:border-blue-400 transition-all flex flex-col items-center">
+            <div class="grid grid-cols-3 gap-3 mb-8">
+                <button onclick="selectCountry('MXN', 27, 'México', 100)" class="country-btn border-2 border-gray-100 rounded-xl p-3 transition-all flex flex-col items-center">
                     <span class="text-3xl mb-1">🇲🇽</span>
                     <span class="text-[10px] font-black">MÉXICO</span>
                 </button>
-                <button onclick="selectCountry('CAD', 305, '🇨🇦 Canadá')" class="country-btn border-2 border-gray-100 rounded-xl p-3 hover:border-blue-400 transition-all flex flex-col items-center">
+                <button onclick="selectCountry('CAD', 305, 'Canadá', 50)" class="country-btn border-2 border-gray-100 rounded-xl p-3 transition-all flex flex-col items-center">
                     <span class="text-3xl mb-1">🇨🇦</span>
                     <span class="text-[10px] font-black">CANADÁ</span>
                 </button>
-                <button onclick="selectCountry('USD', 490, '🇺🇸 USA')" class="country-btn border-2 border-gray-100 rounded-xl p-3 hover:border-blue-400 transition-all flex flex-col items-center">
+                <button onclick="selectCountry('USD', 490, 'EE.UU', 50)" class="country-btn border-2 border-gray-100 rounded-xl p-3 transition-all flex flex-col items-center">
                     <span class="text-3xl mb-1">🇺🇸</span>
                     <span class="text-[10px] font-black">USA</span>
                 </button>
             </div>
 
-            <div id="calc-inputs" class="hidden space-y-4">
-                <div>
-                    <label class="block text-gray-500 text-xs font-bold mb-1 uppercase">Cantidad que envías (<span id="cur-label"></span>):</label>
-                    <input type="number" id="amt" oninput="calculate()" class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-2xl font-bold outline-none" placeholder="0.00">
+            <div id="calc-area" class="hidden space-y-4">
+                <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500 mb-4">
+                    <p class="text-[11px] text-blue-800 font-bold">Envío mínimo para <span id="c-name"></span>: <span id="m-val"></span></p>
                 </div>
                 <div>
-                    <label class="block text-gray-500 text-xs font-bold mb-1 uppercase">Reciben en Cuba (CUP):</label>
-                    <div class="w-full p-4 bg-blue-50 border-2 border-blue-100 rounded-xl text-3xl font-black text-rauly" id="res-cup">0.00</div>
+                    <label class="block text-gray-500 text-[10px] font-black mb-1 uppercase">Cantidad a enviar:</label>
+                    <input type="number" id="amt" oninput="calculate()" class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-2xl font-bold outline-none">
+                    <p id="error-msg" class="text-red-500 text-[11px] font-bold mt-2 hidden text-center italic">⚠️ El monto debe ser mayor al mínimo indicado.</p>
                 </div>
-                <button onclick="goToStep(2)" class="w-full bg-rauly text-white py-4 rounded-xl font-bold shadow-lg hover:bg-blue-900 transition flex items-center justify-center">
-                    SIGUIENTE <i class="fas fa-arrow-right ml-2"></i>
-                </button>
+                <div>
+                    <label class="block text-gray-500 text-[10px] font-black mb-1 uppercase">Reciben en Cuba:</label>
+                    <div class="w-full p-4 bg-green-50 border-2 border-green-200 rounded-xl text-3xl font-black text-green-700" id="res-cup">0.00</div>
+                </div>
+                <button id="btn-to-2" onclick="goToStep(2)" disabled class="w-full bg-gray-300 text-white py-4 rounded-xl font-bold shadow-lg transition cursor-not-allowed">SIGUIENTE</button>
             </div>
         </section>
 
         <section id="step-2" class="step-hidden bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
             <div class="flex items-center mb-6">
-                <button onclick="goToStep(1)" class="mr-3 text-gray-400 hover:text-rauly"><i class="fas fa-arrow-left"></i></button>
-                <span class="bg-rauly text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 font-bold">2</span>
-                <h3 class="font-bold text-gray-700 uppercase">Detalles del Pago</h3>
+                <button onclick="goToStep(1)" class="mr-3 text-gray-400"><i class="fas fa-arrow-left"></i></button>
+                <span class="bg-rauly text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 font-bold text-sm">2</span>
+                <h3 class="font-bold text-gray-700 uppercase text-sm">Vía de Pago</h3>
             </div>
-
-            <div class="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-xl">
-                <p class="text-xs font-bold text-yellow-800 mb-2 uppercase"><i class="fas fa-university mr-1"></i> Transfiere a estas cuentas:</p>
-                <div id="bank-info" class="text-sm text-gray-700 leading-relaxed"></div>
+            <p class="text-xs text-gray-500 mb-4 font-bold uppercase">¿Cómo deseas transferir?</p>
+            <div id="method-options" class="grid grid-cols-1 gap-3">
+                </div>
+            
+            <div id="account-display" class="mt-6 hidden">
+                <div class="bg-yellow-50 p-4 border-l-4 border-yellow-500 rounded-r-xl">
+                    <p class="text-[10px] font-black text-yellow-800 mb-1 uppercase">Cuenta seleccionada:</p>
+                    <div id="final-account" class="text-sm font-mono font-bold text-gray-800 break-all bg-white p-3 rounded border border-yellow-200"></div>
+                </div>
+                <button onclick="goToStep(3)" class="w-full mt-6 bg-rauly text-white py-4 rounded-xl font-bold shadow-lg">SIGUIENTE</button>
             </div>
+        </section>
 
+        <section id="step-3" class="step-hidden bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+            <div class="flex items-center mb-6">
+                <button onclick="goToStep(2)" class="mr-3 text-gray-400"><i class="fas fa-arrow-left"></i></button>
+                <span class="bg-rauly text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 font-bold text-sm">3</span>
+                <h3 class="font-bold text-gray-700 uppercase text-sm">Datos de Entrega</h3>
+            </div>
             <div class="space-y-4">
-                <div>
-                    <label class="block text-gray-500 text-[10px] font-black mb-1 uppercase">Dirección exacta en Cuba:</label>
-                    <textarea id="address" rows="2" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none" placeholder="Calle, #, entre qué calles y municipio..."></textarea>
-                </div>
-                <div>
-                    <label class="block text-gray-500 text-[10px] font-black mb-1 uppercase">Nombre de quien recibe:</label>
-                    <input type="text" id="receiver-name" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none" placeholder="Nombre Completo">
-                </div>
-                <div>
-                    <label class="block text-gray-500 text-[10px] font-black mb-1 uppercase">Nombre de tu cuenta (Desde donde envías):</label>
-                    <input type="text" id="sender-account" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none" placeholder="Ej: Juan Pérez">
-                </div>
-                
-                <div class="p-4 border-2 border-dashed border-gray-200 rounded-xl text-center">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-2">Adjunta captura de pantalla en el WhatsApp</p>
-                    <i class="fas fa-camera text-2xl text-gray-300"></i>
-                </div>
-
-                <button onclick="sendToWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-green-700 transition flex items-center justify-center">
-                    <i class="fab fa-whatsapp mr-2 text-xl"></i> ENVIAR TODO POR WHATSAPP
+                <input type="text" id="rec-name" placeholder="Nombre completo de quien recibe" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none">
+                <textarea id="rec-addr" rows="2" placeholder="Dirección exacta en Cuba" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none"></textarea>
+                <input type="text" id="sender-acc" placeholder="Nombre de tu cuenta (Emisor)" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none">
+                <button onclick="finish()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold shadow-lg flex items-center justify-center uppercase tracking-wider">
+                    <i class="fab fa-whatsapp mr-2 text-xl"></i> Finalizar Pedido
                 </button>
             </div>
         </section>
 
-        <section id="step-3" class="step-hidden bg-white rounded-2xl shadow-xl p-8 text-center border border-gray-100">
+        <section id="step-final" class="step-hidden bg-white rounded-2xl shadow-xl p-8 text-center border border-gray-100">
             <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="fas fa-check text-4xl"></i>
             </div>
-            <h2 class="text-2xl font-black text-gray-800 mb-2">¡LISTO! ✅</h2>
-            <p class="text-gray-600 mb-6">Tus datos han sido enviados. Por favor, asegúrate de adjuntar la <b>foto del comprobante</b> en el chat de WhatsApp que se abrió.</p>
-            <p class="text-sm bg-blue-50 p-4 rounded-lg text-blue-700">"Una vez entregado el dinero, tu familiar te avisará de inmediato."</p>
-            <button onclick="location.reload()" class="mt-8 text-rauly font-bold underline">Hacer otro envío</button>
+            <h2 class="text-2xl font-black text-gray-800 mb-2">¡PEDIDO LISTO! ✅</h2>
+            <p class="text-gray-600 text-sm mb-6 leading-relaxed">Tus datos fueron enviados. <b>Asegúrate de enviar la captura de pantalla</b> del envío ahora en WhatsApp.</p>
+            <div class="bg-blue-50 p-4 rounded-xl text-xs text-blue-700 font-bold">
+                "Te avisaremos en cuanto el dinero sea entregado en el domicilio."
+            </div>
+            <button onclick="location.reload()" class="mt-8 text-rauly font-bold text-sm underline">Realizar nuevo envío</button>
         </section>
 
     </main>
 
     <script>
-        let currentRate = 0;
-        let currentCur = '';
-        let currentCountryName = '';
+        let currentRate = 0, currentCur = '', currentCountry = '', minLimit = 0, selectedMethod = '', selectedAccount = '';
 
-        const bankData = {
-            'MXN': '<b>BBVA:</b> 1234 5678 9012 3456<br><b>COPPEL:</b> 9876 5432 1098 7654<br><b>OXXO:</b> Disponible en caja.',
-            'CAD': '<b>INTERAC:</b> rauly.remesas@email.com<br><b>PayPal:</b> @RaulyRemesas',
-            'USD': '<b>ZELLE:</b> +1 234 567 8900<br><b>W. Union:</b> Datos por privado<br><b>PayPal:</b> @RaulyRemesas'
+        const paymentMethods = {
+            'MXN': [
+                { name: 'BBVA', account: '🏦 BBVA: 1234-5678-9012-3456' },
+                { name: 'COPPEL', account: '💳 COPPEL: 9876-5432-1098-7654' },
+                { name: 'DEPÓSITO OXXO', account: '🏪 OXXO: Solicitar tarjeta por WhatsApp' }
+            ],
+            'CAD': [
+                { name: 'INTERAC', account: '📧 INTERAC: rauly.remesas@email.com' },
+                { name: 'PAYPAL', account: '💎 PAYPAL: @RaulyRemesas' }
+            ],
+            'USD': [
+                { name: 'ZELLE', account: '🚀 ZELLE: +1 234 567 8900' },
+                { name: 'PAYPAL', account: '💎 PAYPAL: @RaulyRemesas' },
+                { name: 'WESTERN UNION', account: '📦 W. UNION: Datos de receptor vía privado' }
+            ]
         };
 
-        function selectCountry(cur, rate, name) {
-            currentRate = rate;
-            currentCur = cur;
-            currentCountryName = name;
-            
-            document.getElementById('cur-label').innerText = cur;
-            document.getElementById('calc-inputs').classList.remove('hidden');
-            
-            // Estética: resaltar botón seleccionado
-            document.querySelectorAll('.country-btn').forEach(btn => btn.classList.remove('border-blue-600', 'bg-blue-50'));
-            event.currentTarget.classList.add('border-blue-600', 'bg-blue-50');
-            
+        function selectCountry(cur, rate, name, min) {
+            currentRate = rate; currentCur = cur; currentCountry = name; minLimit = min;
+            document.getElementById('c-name').innerText = name;
+            document.getElementById('m-val').innerText = min + " " + cur;
+            document.getElementById('calc-area').classList.remove('hidden');
+            document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('btn-active'));
+            event.currentTarget.classList.add('btn-active');
             calculate();
         }
 
         function calculate() {
-            const amt = document.getElementById('amt').value;
+            const val = parseFloat(document.getElementById('amt').value) || 0;
             const res = document.getElementById('res-cup');
-            const total = amt * currentRate;
-            res.innerText = total.toLocaleString() + ' CUP';
+            const err = document.getElementById('error-msg');
+            const btn = document.getElementById('btn-to-2');
+            res.innerText = (val * currentRate).toLocaleString() + ' CUP';
+            
+            const valid = val >= minLimit;
+            err.classList.toggle('hidden', val === 0 || valid);
+            btn.disabled = !valid;
+            btn.className = valid ? "w-full bg-rauly text-white py-4 rounded-xl font-bold shadow-lg" : "w-full bg-gray-300 text-white py-4 rounded-xl font-bold shadow-lg cursor-not-allowed";
         }
 
-        function goToStep(step) {
-            document.getElementById('step-1').classList.add('step-hidden');
-            document.getElementById('step-2').classList.add('step-hidden');
-            document.getElementById('step-3').classList.add('step-hidden');
+        function goToStep(s) {
+            document.querySelectorAll('section').forEach(sec => sec.classList.add('step-hidden'));
+            document.getElementById('welcome-msg').classList.toggle('hidden', s !== 1);
             
-            document.getElementById('step-' + step).classList.remove('step-hidden');
-            
-            if(step === 2) {
-                document.getElementById('bank-info').innerHTML = bankData[currentCur];
+            if(s === 2) {
+                const list = document.getElementById('method-options');
+                list.innerHTML = '';
+                paymentMethods[currentCur].forEach(m => {
+                    const b = document.createElement('button');
+                    b.className = "w-full p-4 border-2 border-gray-100 rounded-xl text-left font-bold text-gray-700 hover:border-rauly flex justify-between items-center";
+                    b.innerHTML = `${m.name} <i class="fas fa-chevron-right text-gray-300"></i>`;
+                    b.onclick = () => {
+                        selectedMethod = m.name;
+                        selectedAccount = m.account;
+                        document.querySelectorAll('#method-options button').forEach(btn => btn.classList.remove('btn-active'));
+                        b.classList.add('btn-active');
+                        document.getElementById('final-account').innerText = m.account;
+                        document.getElementById('account-display').classList.remove('hidden');
+                    };
+                    list.appendChild(b);
+                });
+                document.getElementById('account-display').classList.add('hidden');
             }
+            document.getElementById('step-' + (s === 4 ? 'final' : s)).classList.remove('step-hidden');
             window.scrollTo(0,0);
         }
 
-        function sendToWhatsApp() {
+        function finish() {
             const amt = document.getElementById('amt').value;
             const cup = (amt * currentRate).toLocaleString();
-            const addr = document.getElementById('address').value;
-            const receiver = document.getElementById('receiver-name').value;
-            const senderAcc = document.getElementById('sender-account').value;
+            const name = document.getElementById('rec-name').value;
+            const addr = document.getElementById('rec-addr').value;
+            const sAcc = document.getElementById('sender-acc').value;
 
-            if(!addr || !receiver || !senderAcc) {
-                alert("Por favor, completa todos los campos para continuar.");
-                return;
-            }
+            if(!name || !addr || !sAcc) return alert("Por favor, completa los datos de entrega.");
 
-            const message = `*NUEVO PEDIDO - REMESAS RAULY*%0A%0A` +
-                            `*País:* ${currentCountryName}%0A` +
-                            `*Envía:* ${amt} ${currentCur}%0A` +
-                            `*Entrega:* ${cup} CUP%0A` +
-                            `--------------------------%0A` +
-                            `*Cuenta Emisora:* ${senderAcc}%0A` +
-                            `*Recibe:* ${receiver}%0A` +
-                            `*Dirección:* ${addr}%0A%0A` +
-                            `_Adjunto la captura del envío a continuación..._`;
+            const msg = `*NUEVA REMESA RAULY*%0A%0A` +
+                        `*País:* ${currentCountry}%0A` +
+                        `*Vía:* ${selectedMethod}%0A` +
+                        `*Envía:* ${amt} ${currentCur}%0A` +
+                        `*Reciben:* ${cup} CUP%0A` +
+                        `--------------------------%0A` +
+                        `*Cuenta:* ${sAcc}%0A` +
+                        `*Receptor:* ${name}%0A` +
+                        `*Dirección:* ${addr}%0A%0A` +
+                        `_Adjunto comprobante..._`;
 
-            const waUrl = `https://wa.me/+5356558564?text=${message}`;
-            
-            window.open(waUrl, '_blank');
-            goToStep(3);
+            window.open(`https://wa.me/+5356558564?text=${msg}`, '_blank');
+            goToStep(4);
         }
     </script>
 </body>
