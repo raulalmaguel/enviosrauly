@@ -13,91 +13,111 @@
         .btn-active { border-color: #003366; background-color: #f0f7ff; ring: 2px; ring-color: #003366; }
     </style>
 </head>
-<body class="bg-gray-50 pb-10">
+<body class="bg-gray-50 pb-10 font-sans">
 
-    <nav class="bg-rauly text-white p-4 shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-widest uppercase">Remesas Rauly</h1>
-            <i class="fas fa-shield-alt text-yellow-400"></i>
-        </div>
+    <nav class="bg-rauly text-white p-4 shadow-lg sticky top-0 z-50 text-center">
+        <h1 class="text-xl font-bold tracking-widest uppercase italic">Remesas Rauly</h1>
     </nav>
 
     <main class="container mx-auto p-4 max-w-md">
         
         <div id="welcome-msg" class="bg-white rounded-2xl shadow-md p-6 mb-6 border-t-4 border-rauly">
             <h2 class="text-xl font-bold text-rauly mb-2 text-center">Seguridad y Confianza 🤝</h2>
-            <p class="text-gray-600 text-sm text-center leading-relaxed">
-                Garantizamos la entrega de su remesa directamente en el domicilio en <b>Holguín y Banes</b>. Proceso 100% transparente.
+            <p class="text-gray-600 text-sm text-center leading-relaxed italic">
+                "Su apoyo llega seguro a Holguín y Banes. Proceso verificado y transparente."
             </p>
         </div>
 
         <section id="step-1" class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-            <h3 class="font-bold text-gray-700 uppercase text-xs mb-4"><span class="bg-rauly text-white w-5 h-5 inline-flex items-center justify-center rounded-full mr-2">1</span> Selección y Monto</h3>
-            <div class="grid grid-cols-3 gap-2 mb-6 text-center">
-                <button onclick="selectCountry('MXN', 27, 'México', 100)" class="country-btn border-2 border-gray-100 rounded-xl p-2 transition-all">
-                    <span class="text-2xl">🇲🇽</span><br><span class="text-[9px] font-black tracking-tighter">MÉXICO</span>
+            <h3 class="font-bold text-gray-700 uppercase text-xs mb-4 text-center">1. Seleccione Origen y Monto</h3>
+            <div class="grid grid-cols-3 gap-2 mb-6">
+                <button onclick="selectCountry('MXN', 27, 'México', 100)" class="country-btn border-2 border-gray-100 rounded-xl p-2 transition-all text-center">
+                    <span class="text-2xl">🇲🇽</span><br><span class="text-[9px] font-black">MÉXICO</span>
                 </button>
-                <button onclick="selectCountry('CAD', 305, 'Canadá', 50)" class="country-btn border-2 border-gray-100 rounded-xl p-2 transition-all">
-                    <span class="text-2xl">🇨🇦</span><br><span class="text-[9px] font-black tracking-tighter">CANADÁ</span>
+                <button onclick="selectCountry('CAD', 305, 'Canadá', 50)" class="country-btn border-2 border-gray-100 rounded-xl p-2 transition-all text-center">
+                    <span class="text-2xl">🇨🇦</span><br><span class="text-[9px] font-black">CANADÁ</span>
                 </button>
-                <button onclick="selectCountry('USD', 490, 'EE.UU', 50)" class="country-btn border-2 border-gray-100 rounded-xl p-2 transition-all">
-                    <span class="text-2xl">🇺🇸</span><br><span class="text-[9px] font-black tracking-tighter">USA</span>
+                <button onclick="selectCountry('USD', 490, 'USA', 50)" class="country-btn border-2 border-gray-100 rounded-xl p-2 transition-all text-center">
+                    <span class="text-2xl">🇺🇸</span><br><span class="text-[9px] font-black">USA / ZELLE</span>
                 </button>
             </div>
 
             <div id="calc-area" class="hidden space-y-4">
-                <div class="bg-blue-50 p-2 rounded text-[10px] text-blue-700 font-bold border-l-2 border-blue-500 text-center uppercase">Envío mínimo: <span id="m-val"></span></div>
-                <input type="number" id="amt" oninput="calculate()" class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-2xl font-bold outline-none" placeholder="Monto">
-                <div class="w-full p-4 bg-green-50 border-2 border-green-200 rounded-xl text-2xl font-black text-green-700 text-center" id="res-cup text-sm uppercase">0.00 CUP</div>
-                <button id="btn-to-2" onclick="goToStep(2)" disabled class="w-full bg-gray-300 text-white py-4 rounded-xl font-bold shadow-lg transition cursor-not-allowed">SIGUIENTE</button>
+                <div class="bg-blue-50 p-2 rounded text-[10px] text-blue-700 font-bold border-l-2 border-blue-500 text-center uppercase">Mínimo de envío: <span id="m-val"></span></div>
+                <input type="number" id="amt" oninput="calculate()" class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-2xl font-bold outline-none" placeholder="0.00">
+                <div class="w-full p-4 bg-green-50 border-2 border-green-200 rounded-xl text-2xl font-black text-green-700 text-center" id="res-cup">0.00 CUP</div>
+                <button id="btn-to-2" onclick="goToStep(2)" disabled class="w-full bg-gray-300 text-white py-4 rounded-xl font-bold shadow-lg transition cursor-not-allowed uppercase tracking-widest">Elegir Vía de Pago</button>
             </div>
         </section>
 
         <section id="step-2" class="step-hidden bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-            <h3 class="font-bold text-gray-700 uppercase text-xs mb-4"><span class="bg-rauly text-white w-5 h-5 inline-flex items-center justify-center rounded-full mr-2">2</span> Método de Pago</h3>
+            <h3 class="font-bold text-gray-700 uppercase text-xs mb-4">2. Información de Pago</h3>
             <div id="method-options" class="space-y-3"></div>
+            
             <div id="account-display" class="mt-6 hidden">
-                <div class="bg-yellow-50 p-4 border-l-4 border-yellow-500 rounded-xl mb-4">
-                    <p class="text-[10px] font-black text-yellow-800 mb-1 uppercase">Transferir a:</p>
-                    <div id="final-account" class="text-sm font-mono font-bold text-gray-800 bg-white p-3 rounded border border-yellow-200"></div>
+                <div id="warning-box" class="hidden bg-red-50 border-2 border-red-500 p-4 rounded-xl mb-4">
+                    <p class="text-[11px] font-black text-red-700 uppercase mb-2"><i class="fas fa-exclamation-triangle mr-1"></i> ¡IMPORTANTE PARA ZELLE!</p>
+                    <ul class="text-[10px] text-red-600 space-y-1 font-bold leading-tight">
+                        <li>• NO PONER NADA REFERENTE A CUBA 🇨🇺</li>
+                        <li>• NO PONER: Dinero, Remesas, Combos o Nombres.</li>
+                        <li>• Motivo del pago: DEJAR EN BLANCO O NOTA NEUTRAL.</li>
+                        <li>• SI PONE NOTAS, SE PENALIZA CON EL 25%.</li>
+                    </ul>
                 </div>
-                <button onclick="goToStep(3)" class="w-full bg-rauly text-white py-4 rounded-xl font-bold shadow-lg uppercase">Siguiente</button>
+
+                <div class="bg-yellow-50 p-4 border-l-4 border-yellow-500 rounded-xl mb-4">
+                    <p class="text-[10px] font-black text-yellow-800 mb-2 uppercase text-center italic">Datos de la Cuenta:</p>
+                    <div id="final-account" class="text-xs font-mono font-bold text-gray-800 bg-white p-3 rounded border border-yellow-200 leading-relaxed"></div>
+                </div>
+                <button onclick="goToStep(3)" class="w-full bg-rauly text-white py-4 rounded-xl font-bold shadow-lg uppercase">Ya transferí, continuar</button>
             </div>
         </section>
 
         <section id="step-3" class="step-hidden bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-            <h3 class="font-bold text-gray-700 uppercase text-xs mb-4 text-rauly underline">Datos de quien recibe en Cuba</h3>
+            <h3 class="font-bold text-gray-700 uppercase text-xs mb-4 text-rauly">3. Datos de Entrega en Cuba</h3>
             <div class="space-y-4">
-                <input type="text" id="rec-name" placeholder="Nombre completo del familiar" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm">
-                <input type="number" id="rec-phone" placeholder="Número de teléfono de contacto" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm">
-                <textarea id="rec-addr" rows="2" placeholder="Dirección exacta de entrega" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm"></textarea>
-                <div class="bg-red-50 p-3 rounded text-[10px] text-red-600 italic">
-                    <i class="fas fa-id-card mr-1"></i> Por seguridad, al entregar se solicitará mostrar la identificación (ID).
+                <input type="text" id="rec-name" placeholder="Nombre completo del familiar" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none">
+                <input type="number" id="rec-phone" placeholder="Teléfono de contacto" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none">
+                <textarea id="rec-addr" rows="2" placeholder="Dirección exacta en Holguín/Banes" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none"></textarea>
+                
+                <div class="relative">
+                    <label class="block text-[10px] font-black text-gray-400 mb-1 uppercase tracking-widest text-center">Subir Foto ID Receptor:</label>
+                    <label for="id-file" class="flex items-center justify-center w-full p-4 border-2 border-dashed border-blue-200 rounded-xl bg-blue-50 cursor-pointer">
+                        <div class="text-center">
+                            <i class="fas fa-camera text-xl text-blue-400"></i>
+                            <p id="id-status" class="text-[9px] text-blue-600 font-bold mt-1 uppercase italic">Tocar para buscar foto</p>
+                        </div>
+                    </label>
+                    <input type="file" id="id-file" accept="image/*" class="hidden" onchange="updateFileStatus('id-file', 'id-status')">
                 </div>
-                <button onclick="goToStep(4)" class="w-full bg-rauly text-white py-4 rounded-xl font-bold shadow-lg uppercase">Continuar al Comprobante</button>
+                <button onclick="goToStep(4)" class="w-full bg-rauly text-white py-4 rounded-xl font-bold shadow-lg uppercase">Último Paso</button>
             </div>
         </section>
 
-        <section id="step-4" class="step-hidden bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-            <h3 class="font-bold text-gray-700 uppercase text-xs mb-4 text-green-700">Comprobante de Envío</h3>
-            <div class="space-y-4 text-center">
-                <div class="p-6 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50">
-                    <i class="fas fa-camera text-3xl text-gray-300 mb-2"></i>
-                    <p class="text-[10px] text-gray-500 font-bold uppercase">Debe adjuntar la captura de pantalla y foto de su ID en el chat de WhatsApp</p>
-                </div>
-                <input type="text" id="sender-acc-name" placeholder="Nombre de la cuenta que transfirió" class="w-full p-4 bg-gray-50 border-2 border-blue-100 rounded-xl text-sm font-bold">
-                
-                <button onclick="finish()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold shadow-xl flex items-center justify-center uppercase tracking-widest animate-pulse">
-                    <i class="fab fa-whatsapp mr-2 text-xl"></i> Finalizar y Enviar
+        <section id="step-4" class="step-hidden bg-white rounded-2xl shadow-xl p-6 border border-gray-100 text-center">
+            <h3 class="font-bold text-gray-700 uppercase text-xs mb-4 text-green-700">Comprobante y Emisor</h3>
+            
+            <div class="mb-6">
+                <label for="comp-file" class="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-green-200 rounded-2xl bg-green-50 cursor-pointer">
+                    <i class="fas fa-file-invoice-dollar text-3xl text-green-400 mb-2"></i>
+                    <p id="comp-status" class="text-[10px] text-green-700 font-black uppercase italic">Subir Captura de Pantalla del Envío</p>
+                </label>
+                <input type="file" id="comp-file" accept="image/*" class="hidden" onchange="updateFileStatus('comp-file', 'comp-status')">
+            </div>
+
+            <div class="space-y-4">
+                <input type="text" id="sender-acc-name" placeholder="Nombre de la cuenta que transfirió" class="w-full p-4 bg-white border-2 border-rauly rounded-xl text-sm font-bold">
+                <button onclick="finish()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold shadow-xl flex items-center justify-center uppercase tracking-widest">
+                    <i class="fab fa-whatsapp mr-2 text-xl"></i> Finalizar Pedido
                 </button>
             </div>
         </section>
 
         <section id="step-final" class="step-hidden bg-white rounded-2xl shadow-xl p-8 text-center">
             <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fas fa-check text-2xl"></i></div>
-            <h2 class="text-xl font-black text-gray-800 mb-2 uppercase">¡Listo! ✅</h2>
-            <p class="text-gray-500 text-xs mb-6 leading-relaxed">Sus datos han sido procesados. El equipo de <b>Rauly Remesas</b> le contactará en breve tras verificar el comprobante.</p>
-            <button onclick="location.reload()" class="text-rauly font-bold text-xs underline">Volver al inicio</button>
+            <h2 class="text-xl font-black text-gray-800 mb-2 uppercase">¡RECIBIDO! ✅</h2>
+            <p class="text-gray-600 text-[10px] mb-6">Por favor, adjunte las fotos ahora en el chat de WhatsApp que se abrió.</p>
+            <button onclick="location.reload()" class="text-rauly font-bold text-xs underline uppercase">Nuevo Envío</button>
         </section>
 
     </main>
@@ -107,16 +127,14 @@
 
         const paymentMethods = {
             'MXN': [
-                { name: 'BBVA', account: '🏦 BBVA: 1234-5678-9012-3456' },
-                { name: 'COPPEL', account: '💳 COPPEL: 9876-5432-1098-7654' }
+                { name: 'BANCOPPEL (México)', account: 'MÉXICO 🇲🇽\nTarjeta: 4169 1611 1449 6762\nCuenta CLABE: 137133210133379746\nBeneficiario: Pedro Enrique Bardaji Mendoza\nBanco: Bancoppel\nMínimo: 100 MXN' }
             ],
             'CAD': [
-                { name: 'INTERAC', account: '📧 INTERAC: rauly.remesas@email.com' },
-                { name: 'PAYPAL', account: '💎 PAYPAL: @RaulyRemesas' }
+                { name: 'INTERAC', account: '📧 INTERAC: rauly.remesas@email.com\nMínimo: 50 CAD' }
             ],
             'USD': [
-                { name: 'ZELLE', account: '🚀 ZELLE: +1 234 567 8900' },
-                { name: 'PAYPAL', account: '💎 PAYPAL: @RaulyRemesas' }
+                { name: 'ZELLE', account: '❌❌ Mínimo 50 - OJO Mínimo 50 ❌❌\n\nRR Consulting Services\n+1 (713) 870-4644\n\nSOLO AGREGUE EL CONTACTO CON EL NOMBRE DE LA COMPAÑÍA.\nNO ENVIAR DINERO DE PRUEBA.' },
+                { name: 'PAYPAL', account: '💎 PAYPAL: @RaulyRemesas\nMínimo: 50 USD' }
             ]
         };
 
@@ -131,12 +149,17 @@
 
         function calculate() {
             const val = parseFloat(document.getElementById('amt').value) || 0;
-            const res = document.getElementById('res-cup text-sm uppercase');
+            const res = document.getElementById('res-cup');
             const btn = document.getElementById('btn-to-2');
             res.innerText = (val * currentRate).toLocaleString() + ' CUP';
             const valid = val >= minLimit;
             btn.disabled = !valid;
-            btn.className = valid ? "w-full bg-rauly text-white py-4 rounded-xl font-bold shadow-lg" : "w-full bg-gray-300 text-white py-4 rounded-xl font-bold shadow-lg cursor-not-allowed";
+            btn.className = valid ? "w-full bg-rauly text-white py-4 rounded-xl font-bold shadow-lg" : "w-full bg-gray-300 text-white py-4 rounded-xl font-bold shadow-lg cursor-not-allowed uppercase text-xs";
+        }
+
+        function updateFileStatus(inputId, statusId) {
+            const file = document.getElementById(inputId).files[0];
+            if(file) { document.getElementById(statusId).innerText = "✅ LISTO: " + file.name.substring(0, 12); }
         }
 
         function goToStep(s) {
@@ -147,12 +170,13 @@
                 list.innerHTML = '';
                 paymentMethods[currentCur].forEach(m => {
                     const b = document.createElement('button');
-                    b.className = "w-full p-4 border-2 border-gray-100 rounded-xl text-left font-bold text-gray-700 flex justify-between";
+                    b.className = "w-full p-4 border-2 border-gray-100 rounded-xl text-left font-black text-gray-600 flex justify-between items-center text-xs tracking-tighter uppercase";
                     b.innerHTML = `${m.name} <i class="fas fa-chevron-right text-gray-300"></i>`;
                     b.onclick = () => {
                         selectedMethod = m.name; selectedAccount = m.account;
                         document.getElementById('final-account').innerText = m.account;
                         document.getElementById('account-display').classList.remove('hidden');
+                        document.getElementById('warning-box').classList.toggle('hidden', m.name !== 'ZELLE');
                         document.querySelectorAll('#method-options button').forEach(bt => bt.classList.remove('btn-active'));
                         b.classList.add('btn-active');
                     };
@@ -164,28 +188,24 @@
         }
 
         function finish() {
-            const amt = document.getElementById('amt').value;
-            const cup = (amt * currentRate).toLocaleString();
-            const name = document.getElementById('rec-name').value;
-            const phone = document.getElementById('rec-phone').value;
-            const addr = document.getElementById('rec-addr').value;
+            const amt = document.getElementById('amt').value, cup = (amt * currentRate).toLocaleString();
+            const name = document.getElementById('rec-name').value, phone = document.getElementById('rec-phone').value, addr = document.getElementById('rec-addr').value;
             const sName = document.getElementById('sender-acc-name').value;
+            const idF = document.getElementById('id-file').files[0], cpF = document.getElementById('comp-file').files[0];
 
-            if(!name || !phone || !addr || !sName) return alert("Por favor, complete todos los campos de información.");
+            if(!name || !phone || !addr || !sName || !idF || !cpF) return alert("Por favor, llene todos los datos y suba las 2 fotos.");
 
             const msg = `*NUEVA REMESA RAULY*%0A%0A` +
                         `*--- PAGO ---*%0A` +
-                        `*Origen:* ${currentCountry}%0A` +
-                        `*Vía:* ${selectedMethod}%0A` +
+                        `*Vía:* ${selectedMethod} (${currentCountry})%0A` +
                         `*Envía:* ${amt} ${currentCur}%0A` +
+                        `*Emisor:* ${sName}%0A%0A` +
                         `*--- ENTREGA EN CUBA ---*%0A` +
                         `*Recibe:* ${name}%0A` +
-                        `*Teléfono:* ${phone}%0A` +
-                        `*Dirección:* ${addr}%0A%0A` +
-                        `*--- EMISOR ---*%0A` +
-                        `*Cuenta:* ${sName}%0A` +
-                        `*Entregar:* ${cup} CUP%0A%0A` +
-                        `_A continuación envío Foto de ID y Captura de Pantalla..._`;
+                        `*Tel:* ${phone}%0A` +
+                        `*Dir:* ${addr}%0A%0A` +
+                        `*TOTAL:* ${cup} CUP%0A%0A` +
+                        `_⚠️ Adjunto Foto de ID y Comprobante..._`;
 
             window.open(`https://wa.me/+5356558564?text=${msg}`, '_blank');
             goToStep(5);
